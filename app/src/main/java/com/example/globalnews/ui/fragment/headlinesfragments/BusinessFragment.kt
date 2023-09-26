@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,12 +14,13 @@ import com.example.globalnews.adapter.BusinessAdapter
 import com.example.globalnews.data.remote.ApiClient
 import com.example.globalnews.model.ArticlesItem2
 import com.example.globalnews.model.Business
+import com.example.globalnews.navigation.MyNavigator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class BusinessFragment : Fragment(R.layout.fragment_business) {
+class BusinessFragment(val listener:MyNavigator) : Fragment(R.layout.fragment_business) {
     lateinit var adapteer:BusinessAdapter
     lateinit var bisness:ArrayList<ArticlesItem2>
     lateinit var loadingProgresssBarBusness:ProgressBar
@@ -37,9 +39,12 @@ class BusinessFragment : Fragment(R.layout.fragment_business) {
         recyclelBissnes.layoutManager=LinearLayoutManager(requireContext())
 
         adapteer.itemClickk={
-            val bundle = Bundle()
-            bundle.putString("noteId",bisness[it].url)
-            findNavController().navigate(R.id.action_businessFragment_to_detailFragment,bundle)
+
+           listener.saveAction(
+               R.id.action_headlinesFragment_to_detailFragment,
+               bundleOf("noteId" to bisness[it].url)
+           )
+
         }
     }
 

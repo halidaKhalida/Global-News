@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_headlinesFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_headlinesFragment_to_detailFragment2"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/pressaFragment"

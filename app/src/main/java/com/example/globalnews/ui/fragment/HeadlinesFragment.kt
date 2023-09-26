@@ -3,6 +3,7 @@ package com.example.globalnews.ui.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.globalnews.R
@@ -10,6 +11,7 @@ import com.example.globalnews.adapter.BusinessAdapter
 import com.example.globalnews.adapter.ViewpagerAdapter
 import com.example.globalnews.model.ArticlesItem
 import com.example.globalnews.model.ArticlesItem2
+import com.example.globalnews.navigation.MyNavigator
 import com.example.globalnews.ui.fragment.headlinesfragments.EntertainmentsFragment
 import com.example.globalnews.ui.fragment.headlinesfragments.HealthFragment
 import com.example.globalnews.ui.fragment.headlinesfragments.BusinessFragment
@@ -18,7 +20,7 @@ import com.example.globalnews.ui.fragment.headlinesfragments.SportFragment
 import com.google.android.material.tabs.TabLayout
 
 
-class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
+class HeadlinesFragment : Fragment(R.layout.fragment_headlines),MyNavigator{
     lateinit var myadapter:ViewpagerAdapter
     lateinit var titles:ArrayList<String>
     lateinit var bu:ArrayList<ArticlesItem2>
@@ -45,16 +47,24 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
     private fun loadFragment() {
         fragment= ArrayList()
         titles= ArrayList()
-        fragment.add(BusinessFragment())
+        fragment.add(BusinessFragment(this))
         titles.add("Бизнес")
-        fragment.add(HealthFragment())
+        fragment.add(HealthFragment(this))
         titles.add("Здоровье")
-        fragment.add(EntertainmentsFragment())
+        fragment.add(EntertainmentsFragment(this))
         titles.add("Развлечения")
-        fragment.add(SportFragment())
+        fragment.add(SportFragment(this))
         titles.add("Спорт")
-        fragment.add(SciensFragment())
+        fragment.add(SciensFragment(this))
         titles.add("Наука")
+    }
+
+    override fun saveAction(actionID: Int, bundle: Bundle?) {
+        when(actionID){
+            R.id.action_headlinesFragment_to_detailFragment->{
+                findNavController().navigate(R.id.action_headlinesFragment_to_detailFragment,bundle)
+            }
+        }
     }
 
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +16,13 @@ import com.example.globalnews.adapter.SciensAdapter
 import com.example.globalnews.data.remote.ApiClient
 import com.example.globalnews.model.ArticlesItem
 import com.example.globalnews.model.USANews
+import com.example.globalnews.navigation.MyNavigator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class SciensFragment : Fragment(R.layout.fragment_science) {
+class SciensFragment(val listener: MyNavigator) : Fragment(R.layout.fragment_science) {
     lateinit var adappter:SciensAdapter
     lateinit var scieence:ArrayList<ArticlesItem>
     lateinit var loadingProgressBarScience: ProgressBar
@@ -38,9 +40,10 @@ class SciensFragment : Fragment(R.layout.fragment_science) {
         recycleScience.adapter=adappter
         recycleScience.layoutManager=LinearLayoutManager(requireContext())
         adappter.itemClick={
-            val bundle = Bundle()
-            bundle.putString("noteId",scieence[it].url)
-            findNavController().navigate(R.id.action_sciensFragment_to_detailFragment,bundle)
+            listener.saveAction(
+                R.id.action_headlinesFragment_to_detailFragment,
+                bundleOf("noteId" to scieence[it].url)
+            )
         }
     }
 

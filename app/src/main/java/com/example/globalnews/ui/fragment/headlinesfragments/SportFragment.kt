@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +16,13 @@ import com.example.globalnews.adapter.SportAdapter
 import com.example.globalnews.data.remote.ApiClient
 import com.example.globalnews.model.ArticlesItem
 import com.example.globalnews.model.USANews
+import com.example.globalnews.navigation.MyNavigator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class SportFragment : Fragment(R.layout.fragment_sport) {
+class SportFragment(val listener: MyNavigator) : Fragment(R.layout.fragment_sport) {
     lateinit var adapteer:SportAdapter
     lateinit var spooorttt:ArrayList<ArticlesItem>
     lateinit var loadingProgressBarSport: ProgressBar
@@ -38,9 +40,10 @@ class SportFragment : Fragment(R.layout.fragment_sport) {
         recycleSport.adapter=adapteer
         recycleSport.layoutManager=LinearLayoutManager(requireContext())
         adapteer.itemClick={
-            val bundle = Bundle()
-            bundle.putString("noteId",spooorttt[it].url)
-            findNavController().navigate(R.id.action_sportFragment_to_detailFragment,bundle)
+            listener.saveAction(
+                R.id.action_headlinesFragment_to_detailFragment,
+                bundleOf("noteId" to spooorttt[it].url)
+            )
         }
     }
 

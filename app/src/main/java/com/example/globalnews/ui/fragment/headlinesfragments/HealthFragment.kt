@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,12 +14,13 @@ import com.example.globalnews.adapter.HealthAdapter
 import com.example.globalnews.data.remote.ApiClient
 import com.example.globalnews.model.ArticlesItem
 import com.example.globalnews.model.USANews
+import com.example.globalnews.navigation.MyNavigator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class HealthFragment : Fragment(R.layout.fragment_health) {
+class HealthFragment (val listener: MyNavigator) : Fragment(R.layout.fragment_health) {
     lateinit var adaptereed:HealthAdapter
     lateinit var healthh:ArrayList<ArticlesItem>
     lateinit var loadingProgressBarHealth:ProgressBar
@@ -37,9 +39,10 @@ class HealthFragment : Fragment(R.layout.fragment_health) {
         recyclerViewHealth.layoutManager=LinearLayoutManager(requireContext())
 
         adaptereed.itemClick={
-            val bundle = Bundle()
-            bundle.putString("noteId",healthh[it].url)
-            findNavController().navigate(R.id.action_healthFragment_to_detailFragment,bundle)
+            listener.saveAction(
+                R.id.action_headlinesFragment_to_detailFragment,
+                bundleOf("noteId" to healthh[it].url)
+            )
         }
     }
 
